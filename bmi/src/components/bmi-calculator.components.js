@@ -25,9 +25,10 @@ const BMICalculator = (props) => {
   useEffect(() => {
     //console.log(unit);
     metricBMI(heightCount, weightCount);
+    imperialBMI(heightCount, weightCount, inchesCount);
 
     // eslint-disable-next-line
-  }, [heightCount, weightCount]);
+  }, [heightCount, weightCount, inchesCount]);
   const onChangeInput = (event) => {
     const { name, value } = event.target;
     // controlled to uncontrolled err
@@ -77,6 +78,16 @@ const BMICalculator = (props) => {
       getBmiValue(Math.round(bmi));
     }
   };
+
+  const imperialBMI = (height, weight, inches) => {
+    if (height > 0 && weight > 0 && inches > 0) {
+      // convert feet to inches
+      // add it to inches value
+      const heightToInches = (height * 12) + parseInt(inches);
+      const bmi = 703 * (weight / Math.pow(heightToInches, 2));
+      getBmiValue(Math.round(bmi));
+    }
+  };
   return (
     <>
       <div className="bmi-inputs">
@@ -105,7 +116,7 @@ const BMICalculator = (props) => {
           {unit === "Imperial" ? (
             <FormInput
               type="text"
-              name="heightCount"
+              name="inchesCount"
               title={` (in)`}
               value={inchesCount}
               onChange={onChangeInput}
