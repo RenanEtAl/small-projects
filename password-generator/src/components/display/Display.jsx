@@ -7,7 +7,7 @@ const Display = () => {
   return (
     <>
       <div className="row">
-        <div className='"col-12 password-display-container"'>
+        <div className="col-12 password-display-container">
           <div style={{ width: "100%" }}>
             <div className="password-display">
               <input

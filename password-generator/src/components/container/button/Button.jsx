@@ -5,7 +5,7 @@ const Button = (props) => {
   return (
     <>
       <button className={classname} label={label} onClick={handleClick}>
-        <i className={iconClass}></i> label={label}
+        <i className={iconClass}></i> {label}
       </button>
     </>
   );
