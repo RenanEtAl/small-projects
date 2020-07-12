@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Container.css";
 import Button from "./button/Button";
 import Slider from "./slider/Slider";
@@ -32,12 +32,31 @@ const CHECKBOX_LIST = [
 ];
 
 const Container = (props) => {
+  const [rangeValue, setRangeValue] = useState(12);
+  const [checkbox, setCheckBox] = useState({
+    uppercase: true,
+    lowercase: true,
+    symbols: true,
+    numbers: true,
+  });
   const onChangeSlider = (event) => {
-    console.log(event.target.value);
+    //console.log(event.target.value);
+    setRangeValue(event.target.value);
   };
 
   const onChangeCheckBox = (event) => {
-    console.log(event.target.value);
+    //console.log(event.target.value);
+    let { name, checked } = event.target;
+
+    CHECKBOX_LIST.map((checkbox) => {
+      if (checkbox.name === name) {
+        checkbox.isChecked = checked;
+        setCheckBox({ [name]: checkbox.isChecked })
+      }
+
+      return "";
+    });
+    console.log(CHECKBOX_LIST);
   };
   return (
     <div className="password-settings">
@@ -46,11 +65,11 @@ const Container = (props) => {
         <div className="col-md-12">
           <div className="form-group">
             <Slider
-              min={parseInt(10)}
-              max={parseInt(10)}
+              min={1}
+              max={100}
               step={1}
-              value={10}
-              defaultLength={10}
+              value={parseInt(rangeValue, 10)}
+              defaultLength={parseInt(rangeValue, 10)}
               onChangeValue={onChangeSlider}
             />
           </div>
@@ -65,9 +84,7 @@ const Container = (props) => {
                 label={checkbox.label}
                 value={checkbox.isChecked}
                 onChange={onChangeCheckBox}
-                disabled={
-                 false
-                }
+                disabled={false}
               />
             ))}
           </div>
