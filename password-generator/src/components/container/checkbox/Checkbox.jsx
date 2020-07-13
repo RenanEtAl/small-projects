@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import './Checkbox.css'
 
 const Checkbox = (props) => {
   const { label, value, checked, name, onChange, disabled } = props;
@@ -7,7 +8,7 @@ const Checkbox = (props) => {
     <>
       <div className="col-md-3">
         <label className="container">
-          <h2>{label}</h2>
+          <h1>{label}</h1>
 
           <input
             className="checkbox-input"

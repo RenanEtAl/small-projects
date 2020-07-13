@@ -23,6 +23,7 @@
 
 .password-display-input {
   background-color: inherit;
+  /* border: 1px solid white !important; */
   border: none !important;
   outline: none !important;
   color: white;

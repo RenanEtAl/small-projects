@@ -42,8 +42,9 @@ const Container = (props) => {
     symbols: true,
     numbers: true,
   });
-
   const { uppercase, lowercase, symbols, numbers } = checkbox;
+  const [checked, setChecked] = useState(false);
+  const [checkedName, setCheckedName] = useState("");
 
   useEffect(() => {
     setPasswordLength(rangeValue);
@@ -64,6 +65,7 @@ const Container = (props) => {
     setRangeValue(event.target.value);
     setPasswordLength(event.target.value);
     setRange(event.target.value);
+    passwordGenerated(checkbox, event.target.value);
   };
 
   const onChangeCheckBox = (event) => {
@@ -74,12 +76,31 @@ const Container = (props) => {
       if (checkbox.name === name) {
         checkbox.isChecked = checked;
         setCheckBox({ [name]: checkbox.isChecked });
+        setCheckBox((prevState) => ({
+          ...prevState,
+          [name]: checkbox.isChecked,
+        }));
+        setPasswordLength(rangeValue);
+        setRangeValue(rangeValue);
       }
 
       return "";
     });
-    console.log(CHECKBOX_LIST);
+    //console.log(CHECKBOX_LIST);
   };
+  const checkBoxCount = () => {
+    const checkedCount = Object.keys(checkbox).filter((key) => checkbox[key]);
+    const disabled = checkedCount.length === 1;
+    const name = checkedCount[0];
+    if (disabled) {
+      setChecked(disabled);
+      setCheckedName(name);
+    } else {
+      setChecked(false);
+      setCheckedName("");
+    }
+  };
+  const updateCheckBoxes = () => {};
   return (
     <div className="password-settings">
       <h3 className="h3">Use the slider and select from the options</h3>
@@ -106,7 +127,9 @@ const Container = (props) => {
                 label={checkbox.label}
                 value={checkbox.isChecked}
                 onChange={onChangeCheckBox}
-                disabled={false}
+                disabled={
+                  checked && checkbox.isChecked && checkedName === checkbox.name
+                }
               />
             ))}
           </div>
