@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Display.css";
 import Button from "../container/button/Button";
 import Container from "../container/Container";
+import { generatePassword } from "../../utils/Helper";
 
 const Display = () => {
+  const [password, setPassword] = useState("");
+  const [rangeValue, setRange] = useState();
+  const [passwordProps, setPasswordProps] = useState();
+
+  const generateNewPassword = () => {
+    const pwd =
+      rangeValue > 3
+        ? generatePassword(passwordProps, rangeValue)
+        : generatePassword(passwordProps, 3);
+    setPassword(pwd);
+  };
   return (
     <>
       <div className="row">
@@ -13,7 +25,7 @@ const Display = () => {
               <input
                 className="password-display-input"
                 type="text"
-                value="fweafjwlakjefwalk"
+                value={password}
                 readOnly
               />
             </div>
@@ -25,12 +37,20 @@ const Display = () => {
             <div className="password-display-icons">
               <Button className="copy-btn" iconClass="far fa-copy" />
 
-              <Button classname="generate-btn" iconClass="fas fa-sync-alt" />
+              <Button
+                classname="generate-btn"
+                iconClass="fas fa-sync-alt"
+                handleClick={() => generateNewPassword()}
+              />
             </div>
           </div>
         </div>
       </div>
-      <Container />
+      <Container
+        setPassword={setPassword}
+        setRange={setRange}
+        setPasswordProps={setPasswordProps}
+      />
     </>
   );
 };

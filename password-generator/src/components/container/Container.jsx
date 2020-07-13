@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Container.css";
 import Button from "./button/Button";
 import Slider from "./slider/Slider";
 import Checkbox from "./checkbox/Checkbox";
+import { setPasswordLength, generatePassword } from "../../utils/Helper";
 
 const CHECKBOX_LIST = [
   {
@@ -32,6 +33,8 @@ const CHECKBOX_LIST = [
 ];
 
 const Container = (props) => {
+  const { setPassword, setRange, setPasswordProps } = props; // from display component
+
   const [rangeValue, setRangeValue] = useState(12);
   const [checkbox, setCheckBox] = useState({
     uppercase: true,
@@ -39,9 +42,28 @@ const Container = (props) => {
     symbols: true,
     numbers: true,
   });
+
+  const { uppercase, lowercase, symbols, numbers } = checkbox;
+
+  useEffect(() => {
+    setPasswordLength(rangeValue);
+    setRange(rangeValue);
+    setRangeValue(rangeValue);
+    passwordGenerated(checkbox, rangeValue);
+    // eslint-disable-next-line
+  }, [uppercase, lowercase, symbols, numbers]); //if the values change, rerender
+
+  const passwordGenerated = (checkbox, rangeValue) => {
+    const pwd = generatePassword(checkbox, rangeValue);
+    console.log(pwd);
+    setPassword(pwd);
+    setPasswordProps(checkbox);
+  };
   const onChangeSlider = (event) => {
     //console.log(event.target.value);
     setRangeValue(event.target.value);
+    setPasswordLength(event.target.value);
+    setRange(event.target.value);
   };
 
   const onChangeCheckBox = (event) => {
@@ -51,7 +73,7 @@ const Container = (props) => {
     CHECKBOX_LIST.map((checkbox) => {
       if (checkbox.name === name) {
         checkbox.isChecked = checked;
-        setCheckBox({ [name]: checkbox.isChecked })
+        setCheckBox({ [name]: checkbox.isChecked });
       }
 
       return "";

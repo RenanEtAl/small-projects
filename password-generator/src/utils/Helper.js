@@ -59,6 +59,7 @@ export const generatePasswordLength = () => {
 };
 
 export const generatePassword = (passwordProps, pwdLength) => {
+  // boolean props
   const { uppercase, lowercase, symbols, numbers } = passwordProps;
 
   setPasswordLength(pwdLength);
