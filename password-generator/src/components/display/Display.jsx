@@ -1,13 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./Display.css";
 import Button from "../container/button/Button";
-import Container from "../container/Container";
-import { generatePassword } from "../../utils/Helper";
+import { Container } from "../container/Container";
+import { generatePassword, copyToClipBoard } from "../../utils/Helper";
+import Tooltip from "../container/tooltip/Tooltip";
+
+const selectTagStyle = {
+  backgroundColor: "inherit",
+  color: "#506175",
+  width: "20%",
+  height: "auto",
+  marginLeft: "-4px",
+};
 
 const Display = () => {
   const [password, setPassword] = useState("");
   const [rangeValue, setRange] = useState();
   const [passwordProps, setPasswordProps] = useState();
+  // copy to clipboard func
+  const passwordRef = useRef(null);
+
+  const [tooltip, setTooltip] = useState(false);
+  const [type, setType] = useState("password");
+
+  const copyClipBoard = (event) => {
+    event.preventDefault();
+    copyToClipBoard(passwordRef.current);
+    setTooltip(true);
+    setTimeout(() => {
+      setTooltip(false);
+    }, 2000);
+  };
 
   let pwdDescription = "";
 
@@ -35,8 +58,24 @@ const Display = () => {
         : generatePassword(passwordProps, 3);
     setPassword(pwd);
   };
+
+  const onSelectTag = (event) => {
+    setType(event.target.value);
+  };
   return (
     <>
+      <div>
+        <select
+          name="type"
+          value={type}
+          onChange={onSelectTag}
+          className="form-control form-control-sm "
+          style={selectTagStyle}
+        >
+          <option value="password">Random Password</option>
+          <option value="pin">PIN</option>
+        </select>
+      </div>
       <div className="row">
         <div
           className="col-12 password-display-container"
@@ -46,6 +85,7 @@ const Display = () => {
             <div className="password-display">
               <input
                 className="password-display-input"
+                ref={passwordRef}
                 type="text"
                 value={password}
                 readOnly
@@ -65,21 +105,32 @@ const Display = () => {
             </div>
 
             <div className="password-display-icons">
-              <Button className="copy-btn" iconClass="far fa-copy" />
+              <Button
+                className="copy-btn"
+                iconClass="far fa-copy"
+                handleClick={copyClipBoard}
+              />
 
               <Button
                 classname="generate-btn"
                 iconClass="fas fa-sync-alt"
                 handleClick={() => generateNewPassword()}
               />
+              <Tooltip
+                message="Copied"
+                position="left"
+                displayTooltip={tooltip}
+              />
             </div>
           </div>
         </div>
       </div>
       <Container
+        type={type}
         setPassword={setPassword}
         setRange={setRange}
         setPasswordProps={setPasswordProps}
+        passwordRef={passwordRef}
       />
     </>
   );

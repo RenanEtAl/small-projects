@@ -24,7 +24,7 @@ const setSymbols = (isSymbol) => {
 
 const setNumber = (isNumeric) => {
   if (isNumeric) {
-    characters = +"0123456789";
+    characters += "0123456789";
   }
 
   return "";
@@ -73,6 +73,8 @@ export const generatePassword = (passwordProps, pwdLength) => {
 };
 
 export const copyToClipBoard = (elementRef) => {
+  // select the html element
   elementRef.select();
+  // copy
   document.execCommand("copy");
 };
