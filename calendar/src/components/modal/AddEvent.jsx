@@ -1,5 +1,7 @@
 import React, { useState, useContext } from "react";
 import EventForm from "./EventForm";
+import moment from "moment";
+import AppContext from "../../context/App/appContext";
 
 const AddEvent = () => {
   const [color, setColor] = useState("");
@@ -10,6 +12,8 @@ const AddEvent = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
+  const appContext = useContext(AppContext);
+  const { addEvent, events, colors, colorObj } = appContext;
   const closeModal = () => {
     reset();
   };
@@ -24,7 +28,34 @@ const AddEvent = () => {
     setEndDate(new Date());
   };
   const createEvent = () => {
-    
+    const event = setEvent(events.length + 1);
+    // add event to events arr using context
+    console.log(event);
+    addEvent(event);
+    reset();
+  };
+
+  const setEvent = (id) => {
+    const start = `${moment(startDate).format()}`;
+    let end = "";
+    if (!checkbox) {
+      end = `${moment(startDate).format()}`;
+    } else {
+      end = `${moment(startDate).format("YYYY-MM-DD")}`;
+      // return obj
+    }
+    const event = {
+      id,
+      title: eventname,
+      description,
+      start,
+      end,
+      allDay: checkbox,
+      bgColor: color,
+      backgroudColor: colorObj[color],
+    };
+
+    return event;
   };
 
   const onInputChange = (propertyName) => (event) => {
@@ -59,12 +90,10 @@ const AddEvent = () => {
     }
   };
 
-  
-
   return (
     <div>
       <EventForm
-        modalId="add-even"
+        modalId="add-event"
         title="Add Event"
         description={description}
         closeModal={closeModal}

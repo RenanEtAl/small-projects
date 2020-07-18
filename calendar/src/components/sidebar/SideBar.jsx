@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import AddEvent from "../modal/AddEvent";
+import AppContext from "../../context/App/appContext";
 
 const Sidebar = (props) => {
+  const appContext = useContext(AppContext);
+
+  const { events } = appContext;
   return (
     <div className="col-lg-3">
       <button
@@ -15,9 +19,17 @@ const Sidebar = (props) => {
       <div className="m-t-20">
         <AddEvent />
         <br />
-        <div className="external-event bg-primary">Watch Movies</div>
-        <div className="external-event bg-success">call friends</div>
-        <div className="external-event bg-danger">eat dinner</div>
+
+        {events.length > 0
+          ? events.map((event, index) => (
+              <div
+                className={`external-event bg-${event.bgColor}`}
+                key={event.id + index}
+              >
+                {event.title}
+              </div>
+            ))
+          : "There are no events for this date."}
       </div>
     </div>
   );

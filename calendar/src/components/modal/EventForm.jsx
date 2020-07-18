@@ -25,7 +25,7 @@ const EventForm = (props) => {
 
   return (
     <div>
-      <div className="modal fade" id={modalId} tabindex="-1" role="dialog">
+      <div className="modal fade" id={modalId} tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
