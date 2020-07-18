@@ -52,7 +52,7 @@ const AddEvent = () => {
       end,
       allDay: checkbox,
       bgColor: color,
-      backgroudColor: colorObj[color],
+      backgroundColor: colorObj[color],
     };
 
     return event;
@@ -69,7 +69,13 @@ const AddEvent = () => {
   // input field
   const inputChange = (event) => {
     //console.log(event.target.value)
-    setEventName(event.target.value);
+    const attributeName = event.target.getAttribute("name");
+    if (attributeName === "event-name") {
+      setEventName(event.target.value);
+    }
+    if (attributeName === "description") {
+      setDescription(event.target.value);
+    }
   };
   // all day event input
   const onCheckBoxChange = (event) => {
