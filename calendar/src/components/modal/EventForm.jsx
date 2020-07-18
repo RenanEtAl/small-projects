@@ -55,7 +55,7 @@ const EventForm = (props) => {
                 </div>
                 <div className="form-group">
                   <label className="control-label">Description</label>
-                  <input
+                  <textarea
                     className="form-control fom-white"
                     placeholder="Enter Description"
                     type="text"

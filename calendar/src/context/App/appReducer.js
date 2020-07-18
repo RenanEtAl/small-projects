@@ -23,7 +23,7 @@ export default (state, action) => {
     case EDIT_EVENT:
       return { ...state, events: action.payload };
     case SELECT_EVENT:
-      return { ...state, events: action.payload };
+      return { ...state, selectedEvent: action.payload };
     default:
       return state;
   }

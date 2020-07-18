@@ -2,7 +2,8 @@ import React, { useReducer } from "react";
 
 import AppReducer from "./appReducer";
 import AppContext from "./appContext";
-import { ADD_EVENT } from "../types";
+import { ADD_EVENT, GET_EVENTS, SELECT_EVENT } from "../types";
+import { useLocalStorage } from "../../hooks/storage";
 
 const AppState = (props) => {
   const initialState = {
@@ -20,13 +21,30 @@ const AppState = (props) => {
   };
 
   const [state, dispatch] = useReducer(AppReducer, initialState);
+
+  // custom storage hook
+  const [item, setValue] = useLocalStorage("events"); // events as key
+  const [selectedItem, setSelectedItem] = useLocalStorage("selectedEvent");
+
   // add new event
   const addEvent = (event) => {
     let userEvents = [...state.events];
     userEvents.push(event);
     // persistence
-    //setValue(userEvents);
+    setValue(userEvents);
     dispatch({ type: ADD_EVENT, payload: userEvents });
+  };
+
+  // get all events from local storage
+  const getEvents = () => {
+    if (item) {
+      dispatch({ type: GET_EVENTS, payload: item });
+    }
+  };
+  // set selected events
+  const selected = (event) => {
+    setSelectedItem(event);
+    dispatch({ type: SELECT_EVENT, payload: event });
   };
 
   return (
@@ -37,6 +55,8 @@ const AppState = (props) => {
         selectedEvent: state.selectedEvent,
         activeCalendarEvents: state.activeCalendarEvents,
         addEvent,
+        getEvents,
+        selected,
       }}
     >
       {props.children}
