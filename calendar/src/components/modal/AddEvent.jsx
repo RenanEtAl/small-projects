@@ -66,7 +66,8 @@ const AddEvent = () => {
       setEndDate(event);
     }
   };
-  // input field
+
+  // input field using the name property
   const inputChange = (event) => {
     //console.log(event.target.value)
     const attributeName = event.target.getAttribute("name");

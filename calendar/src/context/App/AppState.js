@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 
+import _ from "lodash";
 import AppReducer from "./appReducer";
 import AppContext from "./appContext";
 import {
@@ -8,6 +9,7 @@ import {
   SELECT_EVENT,
   EDIT_EVENT,
   DELETE_EVENT,
+  ACTIVE_EVENTS,
 } from "../types";
 import { useLocalStorage } from "../../hooks/storage";
 
@@ -31,6 +33,9 @@ const AppState = (props) => {
   // custom storage hook
   const [item, setValue] = useLocalStorage("events"); // events as key
   const [, setSelectedItem] = useLocalStorage("selectedEvent");
+  // active events
+  const [active, setActiveEvents] = useLocalStorage("activeCalendarEvents");
+  const [, setActiveEvent] = useLocalStorage("eventActive");
 
   // add new event
   const addEvent = (event) => {
@@ -68,7 +73,23 @@ const AppState = (props) => {
     const newEventsArray = item.filter((e) => e.id !== event.id);
     setValue(newEventsArray);
     dispatch({ type: DELETE_EVENT, payload: newEventsArray });
-    
+
+  };
+
+  // set due events
+  const activeEvents = (event) => {
+    let calendarEvents = [...state.activeCalendarEvents];
+    calendarEvents.push(event);
+    // check to make sure there's no duplicate
+    const activeEventsArray = _.uniqBy(calendarEvents, "id");
+    setActiveEvents(activeEventsArray);
+    dispatch({ type: ACTIVE_EVENTS, payload: activeEventsArray });
+  };
+  // get the active calendar events
+  const getActiveEvents = () => {
+    if (active) {
+      dispatch({ type: GET_EVENTS, payload: item });
+    }
   };
   return (
     <AppContext.Provider
@@ -83,6 +104,8 @@ const AppState = (props) => {
         selected,
         editSelectedEvent,
         deleteSelectedEvent,
+        activeEvents,
+        getActiveEvents,
       }}
     >
       {props.children}
