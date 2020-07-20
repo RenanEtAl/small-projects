@@ -2,7 +2,13 @@ import React, { useReducer } from "react";
 
 import AppReducer from "./appReducer";
 import AppContext from "./appContext";
-import { ADD_EVENT, GET_EVENTS, SELECT_EVENT } from "../types";
+import {
+  ADD_EVENT,
+  GET_EVENTS,
+  SELECT_EVENT,
+  EDIT_EVENT,
+  DELETE_EVENT,
+} from "../types";
 import { useLocalStorage } from "../../hooks/storage";
 
 const AppState = (props) => {
@@ -24,7 +30,7 @@ const AppState = (props) => {
 
   // custom storage hook
   const [item, setValue] = useLocalStorage("events"); // events as key
-  const [selectedItem, setSelectedItem] = useLocalStorage("selectedEvent");
+  const [, setSelectedItem] = useLocalStorage("selectedEvent");
 
   // add new event
   const addEvent = (event) => {
@@ -46,7 +52,24 @@ const AppState = (props) => {
     setSelectedItem(event);
     dispatch({ type: SELECT_EVENT, payload: event });
   };
+  // edit event
+  const editSelectedEvent = (event) => {
+    const newEvents = item.map((e) => {
+      //map through item array from useLocalStorage
+      // if the id in useLocalStorage matches with the event id that is being edited
+      // then replace it with the new event
+      return e.id === event.id ? event : e;
+    });
+    setValue(newEvents);
+    dispatch({ type: EDIT_EVENT, payload: newEvents });
+  };
 
+  const deleteSelectedEvent = (event) => {
+    const newEventsArray = item.filter((e) => e.id !== event.id);
+    setValue(newEventsArray);
+    dispatch({ type: DELETE_EVENT, payload: newEventsArray });
+    
+  };
   return (
     <AppContext.Provider
       value={{
@@ -54,9 +77,12 @@ const AppState = (props) => {
         colors: state.colors,
         selectedEvent: state.selectedEvent,
         activeCalendarEvents: state.activeCalendarEvents,
+        colorObj: state.colorObj,
         addEvent,
         getEvents,
         selected,
+        editSelectedEvent,
+        deleteSelectedEvent,
       }}
     >
       {props.children}

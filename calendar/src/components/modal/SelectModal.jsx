@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 
 import AppContext from "../../context/App/appContext";
 
@@ -6,8 +6,10 @@ const SelectModal = () => {
   const appContext = useContext(AppContext);
   const { selectedEvent, deleteSelectedEvent, selected } = appContext;
 
-  const deleteSelected =(event) => {
-  }
+  const deleteSelected = (event) => {
+    deleteSelectedEvent(event);
+    selected({}); // empty selectedEvent (local storage) array
+  };
   return (
     <>
       <div

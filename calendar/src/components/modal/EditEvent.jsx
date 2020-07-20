@@ -21,7 +21,27 @@ const EditEvent = () => {
     editSelectedEvent,
   } = appContext;
 
-  useEffect(() => {});
+  useEffect(() => {
+
+    if (Object.keys(selectedEvent).length) {
+      setColor(selectedEvent.bgColor);
+      setEventName(selectedEvent.title);
+      setDescription(selectedEvent.description);
+      setCheckBox(selectedEvent.allDay);
+      const start = `${moment(new Date(selectedEvent.start)).format()}`;
+      let end = "";
+      // check if all they prop is false
+      if (!selectedEvent.allDay) {
+        setShowTime(false);
+        end = `${moment(new Date(selectedEvent.end)).format()}`;
+      } else {
+        setShowTime(true);
+        end = `${moment(new Date(selectedEvent.end)).format("YYYY-MM-DD")}`;
+      }
+      setStartDate(new Date(start));
+      setEndDate(new Date(end));
+    }
+  }, [selectedEvent, events]);
 
   const inputChange = (event) => {
     const attributeName = event.target.getAttribute("name");
@@ -53,8 +73,10 @@ const EditEvent = () => {
 
   const editEvent = () => {
     const event = setEvent(selectedEvent.id);
-    editSelectedEvent(event);
+    editSelectedEvent(event); 
   };
+
+
   const setEvent = (id) => {
     const start = `${moment(startDate).format()}`;
     let end = "";

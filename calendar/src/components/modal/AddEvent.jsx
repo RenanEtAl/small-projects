@@ -30,7 +30,7 @@ const AddEvent = () => {
   const createEvent = () => {
     const event = setEvent(events.length + 1);
     // add event to events arr using context
-    console.log(event);
+    //console.log(event);
     addEvent(event);
     reset();
   };
