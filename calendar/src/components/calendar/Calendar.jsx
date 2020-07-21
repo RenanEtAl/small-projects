@@ -10,12 +10,23 @@ import Toast from "../toast/Toast";
 
 const Calendar = (props) => {
   const appContext = useContext(AppContext);
-  const { events, getEvents, selected } = appContext;
+  const {
+    events,
+    getEvents,
+    selected,
+    getActiveEvents,
+    activeCalendarEvents,
+  } = appContext;
 
   useEffect(() => {
     getEvents();
     // eslisnt-disable-next-line
   }, [events]);
+  // toast message 
+  useEffect(() => {
+    getActiveEvents();
+    // eslisnt-disable-next-line
+  }, [activeCalendarEvents]);
 
   const handleEventClick = (info) => {
     //console.log(info)

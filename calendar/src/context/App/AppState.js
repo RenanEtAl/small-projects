@@ -92,7 +92,8 @@ const AppState = (props) => {
     setActiveEvents(activeEventsArray);
     dispatch({ type: ACTIVE_EVENTS, payload: activeEventsArray });
   };
-  // get the active calendar events
+  // get the active calendar events 
+  // persist toast message
   const getActiveEvents = () => {
     if (active) {
       dispatch({ type: GET_ACTIVE_EVENTS, payload: active });
