@@ -10,6 +10,7 @@ import {
   EDIT_EVENT,
   DELETE_EVENT,
   ACTIVE_EVENTS,
+  GET_ACTIVE_EVENTS,
 } from "../types";
 import { useLocalStorage } from "../../hooks/storage";
 
@@ -68,12 +69,18 @@ const AppState = (props) => {
     setValue(newEvents);
     dispatch({ type: EDIT_EVENT, payload: newEvents });
   };
-
+  // delete selected event
   const deleteSelectedEvent = (event) => {
+    // normal delete
     const newEventsArray = item.filter((e) => e.id !== event.id);
     setValue(newEventsArray);
     dispatch({ type: DELETE_EVENT, payload: newEventsArray });
+    // delete toast active calendar event
+    const activeEventsArray = active.filter((e) => e.id !== event.id);
+    setActiveEvents(activeEventsArray);
+    dispatch({ type: ACTIVE_EVENTS, payload: activeEventsArray });
 
+    setActiveEvent({}); // notification sound
   };
 
   // set due events
@@ -88,7 +95,7 @@ const AppState = (props) => {
   // get the active calendar events
   const getActiveEvents = () => {
     if (active) {
-      dispatch({ type: GET_EVENTS, payload: item });
+      dispatch({ type: GET_ACTIVE_EVENTS, payload: active });
     }
   };
   return (
